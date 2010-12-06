@@ -1,4 +1,4 @@
-package org.apache.lucene.util;
+package org.apache.lucene.index.values;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -16,25 +16,38 @@ package org.apache.lucene.util;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import java.util.Comparator;
 
-import org.apache.lucene.util.LuceneTestCase;
+import org.apache.lucene.util.BytesRef;
 
-public class TestStringHelper extends LuceneTestCase {
+/**
+ * 
+ * @lucene.experimental
+ */
+public interface PerDocFieldValues {
 
+  public void setInt(long value);
 
-  public void testStringDifference() {
-    String test1 = "test";
-    String test2 = "testing";
-    
-    int result = StringHelper.stringDifference(test1, test2);
-    assertTrue(result == 4);
-    
-    test2 = "foo";
-    result = StringHelper.stringDifference(test1, test2);
-    assertTrue(result == 0);
-    
-    test2 = "test";
-    result = StringHelper.stringDifference(test1, test2);
-    assertTrue(result == 4);
-  }
+  public void setFloat(float value);
+
+  public void setFloat(double value);
+
+  public void setBytes(BytesRef value, Values type);
+
+  public void setBytes(BytesRef value, Values type, Comparator<BytesRef> comp);
+
+  public BytesRef getBytes();
+
+  public Comparator<BytesRef> bytesComparator();
+
+  public double getFloat();
+
+  public long getInt();
+
+  public void setBytesComparator(Comparator<BytesRef> comp);
+
+  public void setType(Values type);
+
+  public Values type();
+
 }
