@@ -1,4 +1,4 @@
-package org.apache.lucene.queryParser.standard.config;
+package org.apache.lucene.search;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -17,21 +17,25 @@ package org.apache.lucene.queryParser.standard.config;
  * limitations under the License.
  */
 
-import java.text.Collator;
-
-import org.apache.lucene.queryParser.core.config.QueryConfigHandler;
-import org.apache.lucene.queryParser.standard.processors.ParametricRangeQueryNodeProcessor;
-import org.apache.lucene.search.TermRangeQuery;
-import org.apache.lucene.util.Attribute;
-
-/**
- * This attribute is used by {@link ParametricRangeQueryNodeProcessor} processor
- * and must be defined in the {@link QueryConfigHandler}. This attribute tells
- * the processor which {@link Collator} should be used for a
- * {@link TermRangeQuery} <br/>
- * 
+/** 
+ * Expert: Default scoring provider. 
+ * <p>
+ * Returns {@link DefaultSimilarity} for every field
  */
-public interface RangeCollatorAttribute extends Attribute {
-  public void setDateResolution(Collator rangeCollator);
-  public Collator getRangeCollator();
+public class DefaultSimilarityProvider implements SimilarityProvider {
+  private static final Similarity impl = new DefaultSimilarity();
+  
+  /** Implemented as <code>overlap / maxOverlap</code>. */
+  public float coord(int overlap, int maxOverlap) {
+    return overlap / (float)maxOverlap;
+  }
+
+  /** Implemented as <code>1/sqrt(sumOfSquaredWeights)</code>. */
+  public float queryNorm(float sumOfSquaredWeights) {
+    return (float)(1.0 / Math.sqrt(sumOfSquaredWeights));
+  }
+
+  public Similarity get(String field) {
+    return impl;
+  }
 }
