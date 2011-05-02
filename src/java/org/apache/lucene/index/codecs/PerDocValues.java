@@ -1,5 +1,4 @@
-package org.apache.lucene.index;
-
+package org.apache.lucene.index.codecs;
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -16,12 +15,30 @@ package org.apache.lucene.index;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+import java.io.Closeable;
 import java.io.IOException;
+import java.util.Collection;
 
-abstract class TermsHashConsumerPerThread {
-  abstract void startDocument() throws IOException;
-  abstract DocumentsWriter.DocWriter finishDocument() throws IOException;
-  abstract public TermsHashConsumerPerField addField(TermsHashPerField termsHashPerField, FieldInfo fieldInfo);
-  abstract public void abort();
+import org.apache.lucene.index.values.DocValues;
+
+/**
+ * 
+ * nocommit javadoc
+ * @experimental
+ */
+public abstract class PerDocValues implements Closeable {
+  /**
+   * Returns {@link DocValues} for the current field.
+   * 
+   * @param field
+   *          the field name
+   * @return the {@link DocValues} for this field or <code>null</code> if not
+   *         applicable.
+   * @throws IOException
+   */
+  public abstract DocValues docValues(String field) throws IOException;
+
+  public static final PerDocValues[] EMPTY_ARRAY = new PerDocValues[0];
+
+  public abstract Collection<String> fields();
 }
