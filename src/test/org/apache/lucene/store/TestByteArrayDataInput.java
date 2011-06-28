@@ -1,4 +1,5 @@
-package org.apache.lucene.util;
+package org.apache.lucene.store;
+
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -16,22 +17,17 @@ package org.apache.lucene.util;
  * limitations under the License.
  */
 
-/**
- * Subclasses of StringInterner are required to
- * return the same single String object for all equal strings.
- * Depending on the implementation, this may not be
- * the same object returned as String.intern().
- *
- * This StringInterner base class simply delegates to String.intern().
- */
-public class StringInterner {
-  /** Returns a single object instance for each equal string. */
-  public String intern(String s) {
-    return s.intern();
-  }
+import org.apache.lucene.util.LuceneTestCase;
 
-  /** Returns a single object instance for each equal string. */
-  public String intern(char[] arr, int offset, int len) {
-    return intern(new String(arr, offset, len));
+public class TestByteArrayDataInput extends LuceneTestCase {
+
+  public void testBasic() throws Exception {
+    byte[] bytes = new byte[] {1, 65};
+    ByteArrayDataInput in = new ByteArrayDataInput(bytes);
+    assertEquals("A", in.readString());
+
+    bytes = new byte[] {1, 1, 65};
+    in.reset(bytes, 1, 2);
+    assertEquals("A", in.readString());
   }
 }
