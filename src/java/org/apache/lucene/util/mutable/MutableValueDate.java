@@ -1,5 +1,3 @@
-package org.apache.lucene.queryParser.standard.config;
-
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -16,20 +14,21 @@ package org.apache.lucene.queryParser.standard.config;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.apache.lucene.util.mutable;
 
-import java.util.Locale;
+import java.util.Date;
 
-import org.apache.lucene.queryParser.core.config.QueryConfigHandler;
-import org.apache.lucene.queryParser.standard.processors.ParametricRangeQueryNodeProcessor;
-import org.apache.lucene.util.Attribute;
+public class MutableValueDate extends MutableValueLong {
+  @Override
+  public Object toObject() {
+    return exists ? new Date(value) : null;
+  }
 
-/**
- * This attribute is used by processor {@link ParametricRangeQueryNodeProcessor}
- * and must be defined in the {@link QueryConfigHandler}. This attribute tells
- * the processor what is the default {@link Locale} used to parse a date. <br/>
- * 
- */
-public interface LocaleAttribute extends Attribute {
-  public void setLocale(Locale locale);
-  public Locale getLocale();
+  @Override
+  public MutableValue duplicate() {
+    MutableValueDate v = new MutableValueDate();
+    v.value = this.value;
+    v.exists = this.exists;
+    return v;
+  }  
 }
