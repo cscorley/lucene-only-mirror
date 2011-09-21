@@ -41,4 +41,8 @@ public class NormalizationZ extends Normalization {
   public String toString() {
     return "Z(" + z + ")";
   }
+  
+  public float getZ() {
+    return z;
+  }
 }
