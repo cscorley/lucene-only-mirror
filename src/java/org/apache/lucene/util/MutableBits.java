@@ -1,4 +1,4 @@
-package org.apache.lucene.search.similarities;
+package org.apache.lucene.util;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -17,24 +17,6 @@ package org.apache.lucene.search.similarities;
  * limitations under the License.
  */
 
-import static org.apache.lucene.search.similarities.SimilarityBase.log2;
-
-/**
- * Tf-idf model of randomness, based on a mixture of Poisson and inverse
- * document frequency.
- * @lucene.experimental
- */ 
-public class BasicModelIne extends BasicModel {
-  @Override
-  public final float score(BasicStats stats, float tfn) {
-    long N = stats.getNumberOfDocuments();
-    long F = stats.getTotalTermFreq();
-    double ne = N * (1 - Math.pow((N - 1) / (double)N, F));
-    return tfn * (float)(log2((N + 1) / (ne + 0.5)));
-  }
-
-  @Override
-  public String toString() {
-    return "I(ne)";
-  }
+public interface MutableBits extends Bits {
+  public void clear(int bit);
 }
