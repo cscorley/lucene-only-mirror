@@ -498,8 +498,7 @@ public class DocumentsWriterPerThread {
         infoStream.message("DWPT", "flushed: segment=" + newSegment + 
                 " ramUsed=" + nf.format(startMBUsed) + " MB" +
                 " newFlushedSize(includes docstores)=" + nf.format(newSegmentSize) + " MB" +
-                " docs/MB=" + nf.format(flushedDocCount / newSegmentSize) +
-                " new/old=" + nf.format(100.0 * newSegmentSize / startMBUsed) + "%");
+                " docs/MB=" + nf.format(flushedDocCount / newSegmentSize));
       }
       doAfterFlush();
       success = true;
