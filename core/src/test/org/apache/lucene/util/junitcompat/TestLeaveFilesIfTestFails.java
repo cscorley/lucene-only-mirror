@@ -1,3 +1,5 @@
+package org.apache.lucene.util.junitcompat;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -15,15 +17,33 @@
  * limitations under the License.
  */
 
-package org.apache.lucene.search.grouping;
+import java.io.File;
 
-import org.apache.lucene.search.FieldComparator; // javadocs
+import org.apache.lucene.util._TestUtil;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
 
-/** 
- * Expert: representation of a group in {@link AbstractFirstPassGroupingCollector},
- * tracking the top doc and {@link FieldComparator} slot.
- * @lucene.internal */
-public class CollectedSearchGroup<T> extends SearchGroup<T> {
-  int topDoc;
-  int comparatorSlot;
+public class TestLeaveFilesIfTestFails extends WithNestedTests {
+  public TestLeaveFilesIfTestFails() {
+    super(true);
+  }
+  
+  public static class Nested1 extends WithNestedTests.AbstractNestedTest {
+    static File file;
+    public void testDummy() {
+      file = _TestUtil.getTempDir("leftover");
+      file.mkdirs();
+      fail();
+    }
+  }
+
+  @Test
+  public void testLeaveFilesIfTestFails() {
+    Result r = JUnitCore.runClasses(Nested1.class);
+    Assert.assertEquals(1, r.getFailureCount());
+    Assert.assertTrue(Nested1.file.exists());
+    Nested1.file.delete();
+  }
 }
