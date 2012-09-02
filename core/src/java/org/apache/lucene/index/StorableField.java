@@ -1,4 +1,4 @@
-package org.apache.lucene.benchmark.byTask.tasks;
+package org.apache.lucene.index;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -17,15 +17,26 @@ package org.apache.lucene.benchmark.byTask.tasks;
  * limitations under the License.
  */
 
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.StoredDocument;
+import java.io.Reader;
 
-/**
- * Abstract class for benchmarking highlighting performance
- */
-public abstract class BenchmarkHighlighter {
-  public abstract int doHighlight( IndexReader reader, int doc, String field,
-      StoredDocument document, Analyzer analyzer, String text ) throws Exception ;
+import org.apache.lucene.util.BytesRef;
+
+/** Represents a single stored field in lucene document. These fields
+ * are contained in document retrieved from IndexReader.
+ *
+ *  @lucene.experimental */
+
+public interface StorableField extends GeneralField {
+
+  /** Non-null if this field has a binary value */
+  public BytesRef binaryValue();
+
+  /** Non-null if this field has a string value */
+  public String stringValue();
+
+  /** Non-null if this field has a Reader value */
+  public Reader readerValue();
+
+  /** Non-null if this field has a numeric value */
+  public Number numericValue(); 
 }

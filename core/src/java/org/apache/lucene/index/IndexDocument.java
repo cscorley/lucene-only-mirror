@@ -1,4 +1,4 @@
-package org.apache.lucene.benchmark.byTask.tasks;
+package org.apache.lucene.index;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -17,15 +17,15 @@ package org.apache.lucene.benchmark.byTask.tasks;
  * limitations under the License.
  */
 
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.StoredDocument;
-
 /**
- * Abstract class for benchmarking highlighting performance
+ * Elementary interface used for indexing an document.
+ * @lucene.internal
  */
-public abstract class BenchmarkHighlighter {
-  public abstract int doHighlight( IndexReader reader, int doc, String field,
-      StoredDocument document, Analyzer analyzer, String text ) throws Exception ;
+public interface IndexDocument {
+
+  /** Obtains all indexable fields in document */
+  public Iterable<? extends IndexableField> indexableFields();
+  
+  /** Obtains all storable fields in document */
+  public Iterable<? extends StorableField> storableFields();
 }
