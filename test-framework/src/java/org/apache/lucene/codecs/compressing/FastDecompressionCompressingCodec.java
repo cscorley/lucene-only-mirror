@@ -1,4 +1,4 @@
-package org.apache.lucene.facet.taxonomy;
+package org.apache.lucene.codecs.compressing;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -17,24 +17,17 @@ package org.apache.lucene.facet.taxonomy;
  * limitations under the License.
  */
 
-/**
- * Exception indicating that a certain operation could not be performed 
- * on a taxonomy related object because of an inconsistency.
- * <p>
- * For example, trying to refresh a taxonomy reader might fail in case 
- * the underlying taxonomy was meanwhile modified in a manner which 
- * does not allow to perform such a refresh. (See {@link TaxonomyReader#refresh()}.)
- *   
- * @lucene.experimental
- */
-public class InconsistentTaxonomyException extends Exception {
-  
-  public InconsistentTaxonomyException(String message) {
-    super(message);
+/** CompressionCodec that uses {@link CompressionMode#FAST_DECOMPRESSION} */
+public class FastDecompressionCompressingCodec extends CompressingCodec {
+
+  /** Constructor that allows to configure the chunk size. */
+  public FastDecompressionCompressingCodec(int chunkSize) {
+    super("FastDecompressionCompressingStoredFields", CompressionMode.FAST_DECOMPRESSION, chunkSize);
   }
-  
-  public InconsistentTaxonomyException() {
-    super();
+
+  /** Default constructor. */
+  public FastDecompressionCompressingCodec() {
+    this(1 << 14);
   }
-  
+
 }

@@ -1,7 +1,4 @@
-package org.apache.lucene.facet.index.categorypolicy;
-
-import org.apache.lucene.facet.taxonomy.TaxonomyReader;
-import org.apache.lucene.facet.taxonomy.TaxonomyWriter;
+package org.apache.lucene.codecs.compressing;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -20,24 +17,17 @@ import org.apache.lucene.facet.taxonomy.TaxonomyWriter;
  * limitations under the License.
  */
 
-/**
- * This class filters our the ROOT category ID. For more information see
- * {@link OrdinalPolicy}.
- * 
- * @lucene.experimental
- */
-public class DefaultOrdinalPolicy implements OrdinalPolicy {
+/** CompressionCodec that uses {@link CompressionMode#FAST} */
+public class FastCompressingCodec extends CompressingCodec {
 
-  /**
-   * Filters out (returns false) ordinals equal or less than
-   * {@link TaxonomyReader#ROOT_ORDINAL}. true otherwise.
-   */
-  public boolean shouldAdd(int ordinal) {
-    return ordinal > TaxonomyReader.ROOT_ORDINAL;
+  /** Constructor that allows to configure the chunk size. */
+  public FastCompressingCodec(int chunkSize) {
+    super("FastCompressingStoredFields", CompressionMode.FAST, chunkSize);
   }
 
-  /**
-   * Implemented as NO-OP as the default is not taxonomy dependent
-   */
-  public void init(TaxonomyWriter taxonomyWriter) { }
+  /** Default constructor. */
+  public FastCompressingCodec() {
+    this(1 << 14);
+  }
+
 }

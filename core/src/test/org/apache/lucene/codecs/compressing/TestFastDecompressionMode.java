@@ -1,7 +1,4 @@
-package org.apache.lucene.facet.index.categorypolicy;
-
-import org.apache.lucene.facet.taxonomy.CategoryPath;
-import org.apache.lucene.facet.taxonomy.TaxonomyReader;
+package org.apache.lucene.codecs.compressing;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -20,19 +17,23 @@ import org.apache.lucene.facet.taxonomy.TaxonomyReader;
  * limitations under the License.
  */
 
-/**
- * This class filters our the ROOT category path. For more information see
- * {@link PathPolicy}.
- * 
- * @lucene.experimental
- */
-public class DefaultPathPolicy implements PathPolicy {
+import java.io.IOException;
 
-  /**
-   * Filters out (returns false) CategoryPaths equal or less than
-   * {@link TaxonomyReader#ROOT_ORDINAL}. true otherwise.
-   */
-  public boolean shouldAdd(CategoryPath categoryPath) {
-    return categoryPath.length() > 0;
+public class TestFastDecompressionMode extends AbstractTestLZ4CompressionMode {
+
+  public void setUp() throws Exception {
+    super.setUp();
+    mode = CompressionMode.FAST_DECOMPRESSION;
   }
+
+  @Override
+  public byte[] test(byte[] decompressed) throws IOException {
+    final byte[] compressed = super.test(decompressed);
+    final byte[] compressed2 = compress(CompressionMode.FAST.newCompressor(), decompressed);
+    // because of the way this compression mode works, its output is necessarily
+    // smaller than the output of CompressionMode.FAST
+    assertTrue(compressed.length <= compressed2.length);
+    return compressed;
+  }
+
 }

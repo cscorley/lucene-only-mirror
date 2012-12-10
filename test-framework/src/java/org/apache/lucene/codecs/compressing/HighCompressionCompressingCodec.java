@@ -17,11 +17,17 @@ package org.apache.lucene.codecs.compressing;
  * limitations under the License.
  */
 
-public class TestFastCompressionMode extends AbstractTestCompressionMode {
+/** CompressionCodec that uses {@link CompressionMode#HIGH_COMPRESSION} */
+public class HighCompressionCompressingCodec extends CompressingCodec {
 
-  public void setUp() throws Exception {
-    super.setUp();
-    mode = CompressionMode.FAST;
+  /** Constructor that allows to configure the chunk size. */
+  public HighCompressionCompressingCodec(int chunkSize) {
+    super("HighCompressionCompressingStoredFields", CompressionMode.HIGH_COMPRESSION, chunkSize);
+  }
+
+  /** Default constructor. */
+  public HighCompressionCompressingCodec() {
+    this(1 << 14);
   }
 
 }
