@@ -1,12 +1,4 @@
-package org.apache.lucene.facet.search;
-
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.util.LuceneTestCase.Slow;
-
-import org.apache.lucene.facet.search.params.FacetSearchParams;
-import org.apache.lucene.facet.search.sampling.BaseSampleTestTopK;
-import org.apache.lucene.facet.search.sampling.Sampler;
-import org.apache.lucene.facet.taxonomy.TaxonomyReader;
+package org.apache.lucene.util.fst;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -25,15 +17,45 @@ import org.apache.lucene.facet.taxonomy.TaxonomyReader;
  * limitations under the License.
  */
 
-@Slow
-public class AdaptiveAccumulatorTest extends BaseSampleTestTopK {
+/** Reads in reverse from a single byte[]. */
+final class ReverseBytesReader extends FST.BytesReader {
+  private final byte[] bytes;
+  private int pos;
+
+  public ReverseBytesReader(byte[] bytes) {
+    this.bytes = bytes;
+  }
 
   @Override
-  protected FacetsAccumulator getSamplingAccumulator(Sampler sampler, TaxonomyReader taxoReader, 
-      IndexReader indexReader, FacetSearchParams searchParams) {
-    AdaptiveFacetsAccumulator res = new AdaptiveFacetsAccumulator(searchParams, indexReader, taxoReader);
-    res.setSampler(sampler);
-    return res;
+  public byte readByte() {
+    return bytes[pos--];
   }
-  
+
+  @Override
+  public void readBytes(byte[] b, int offset, int len) {
+    for(int i=0;i<len;i++) {
+      b[offset+i] = bytes[pos--];
+    }
+  }
+
+  @Override
+  public void skipBytes(int count) {
+    pos -= count;
+  }
+
+  @Override
+  public long getPosition() {
+    return pos;
+  }
+
+  @Override
+  public void setPosition(long pos) {
+    this.pos = (int) pos;
+  }
+
+  @Override
+  public boolean reversed() {
+    return true;
+  }
 }
+
