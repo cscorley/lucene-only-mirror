@@ -1,4 +1,4 @@
-package org.apache.lucene.codecs.lucene40;
+package org.apache.lucene.codecs.blockterms;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -18,17 +18,18 @@ package org.apache.lucene.codecs.lucene40;
  */
 
 import org.apache.lucene.codecs.Codec;
+import org.apache.lucene.codecs.lucene41vargap.Lucene41VarGapDocFreqInterval;
 import org.apache.lucene.index.BasePostingsFormatTestCase;
+import org.apache.lucene.util._TestUtil;
 
 /**
- * Tests Lucene40PostingsFormat
+ * Basic tests of a PF using VariableGap terms dictionary (fixed interval, docFreq threshold)
  */
-public class TestLucene40PostingsFormat extends BasePostingsFormatTestCase {
-  private final Codec codec = new Lucene40RWCodec();
+public class TestVarGapFixedIntervalPostingsFormat extends BasePostingsFormatTestCase {
+  private final Codec codec = _TestUtil.alwaysPostingsFormat(new Lucene41VarGapDocFreqInterval(_TestUtil.nextInt(random(), 1, 100), _TestUtil.nextInt(random(), 1, 1000)));
 
   @Override
   protected Codec getCodec() {
     return codec;
   }
-  
 }
