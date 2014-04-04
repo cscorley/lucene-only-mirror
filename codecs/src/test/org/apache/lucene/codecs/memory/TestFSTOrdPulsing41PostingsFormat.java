@@ -1,4 +1,4 @@
-package org.apache.lucene.codecs.intblock;
+package org.apache.lucene.codecs.memory;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -18,16 +18,14 @@ package org.apache.lucene.codecs.intblock;
  */
 
 import org.apache.lucene.codecs.Codec;
-import org.apache.lucene.codecs.mockintblock.MockFixedIntBlockPostingsFormat;
 import org.apache.lucene.index.BasePostingsFormatTestCase;
 import org.apache.lucene.util.TestUtil;
 
 /**
- * Basic tests for FixedIntBlock
+ * Tests FSTOrdPulsing41PostingsFormat 
  */
-public class TestFixedIntBlockPostingsFormat extends BasePostingsFormatTestCase {
-  // TODO: randomize blocksize
-  private final Codec codec = TestUtil.alwaysPostingsFormat(new MockFixedIntBlockPostingsFormat());
+public class TestFSTOrdPulsing41PostingsFormat extends BasePostingsFormatTestCase {
+  private final Codec codec = TestUtil.alwaysPostingsFormat(new FSTOrdPulsing41PostingsFormat());
 
   @Override
   protected Codec getCodec() {

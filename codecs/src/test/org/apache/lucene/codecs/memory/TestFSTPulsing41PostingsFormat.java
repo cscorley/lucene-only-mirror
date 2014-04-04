@@ -1,4 +1,4 @@
-package org.apache.lucene.codecs.sep;
+package org.apache.lucene.codecs.memory;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -17,20 +17,18 @@ package org.apache.lucene.codecs.sep;
  * limitations under the License.
  */
 
-import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.IOContext;
+import org.apache.lucene.codecs.Codec;
+import org.apache.lucene.index.BasePostingsFormatTestCase;
+import org.apache.lucene.util.TestUtil;
 
-import java.io.IOException;
+/**
+ * Tests FSTPulsing41PostingsFormat 
+ */
+public class TestFSTPulsing41PostingsFormat extends BasePostingsFormatTestCase {
+  private final Codec codec = TestUtil.alwaysPostingsFormat(new FSTPulsing41PostingsFormat());
 
-/** Provides int reader and writer to specified files.
- *
- * @lucene.experimental */
-public abstract class IntStreamFactory {
-  /** Create an {@link IntIndexInput} on the provided
-   *  fileName. */
-  public abstract IntIndexInput openInput(Directory dir, String fileName, IOContext context) throws IOException;
-
-  /** Create an {@link IntIndexOutput} on the provided
-   *  fileName. */
-  public abstract IntIndexOutput createOutput(Directory dir, String fileName, IOContext context) throws IOException;
+  @Override
+  protected Codec getCodec() {
+    return codec;
+  }
 }

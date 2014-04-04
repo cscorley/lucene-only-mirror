@@ -1,4 +1,9 @@
-package org.apache.lucene.codecs.sep;
+package org.apache.lucene.util;
+
+import java.util.concurrent.atomic.AtomicInteger;
+
+import org.junit.runner.notification.Failure;
+import org.junit.runner.notification.RunListener;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -17,20 +22,27 @@ package org.apache.lucene.codecs.sep;
  * limitations under the License.
  */
 
-import org.apache.lucene.codecs.Codec;
-import org.apache.lucene.codecs.mocksep.MockSepPostingsFormat;
-import org.apache.lucene.index.BasePostingsFormatTestCase;
-import org.apache.lucene.util.TestUtil;
-
 /**
- * Tests sep layout
+ * A {@link RunListener} that detects suite/ test failures. We need it because failures
+ * due to thread leaks happen outside of any rule contexts.
  */
-public class TestSepPostingsFormat extends BasePostingsFormatTestCase {
-  // TODO: randomize cutoff
-  private final Codec codec = TestUtil.alwaysPostingsFormat(new MockSepPostingsFormat());
+public class FailureMarker extends RunListener {
+  static final AtomicInteger failures = new AtomicInteger();
 
   @Override
-  protected Codec getCodec() {
-    return codec;
+  public void testFailure(Failure failure) throws Exception {
+    failures.incrementAndGet();
+  }
+
+  public static boolean hadFailures() {
+    return failures.get() > 0;
+  }
+
+  static int getFailures() {
+    return failures.get();
+  }
+
+  public static void resetFailures() {
+    failures.set(0);
   }
 }
