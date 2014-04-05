@@ -2242,9 +2242,16 @@ public abstract class LuceneTestCase extends Assert {
     return tempDirBase;
   }
 
+
   /**
    */
-  protected static File createTempDir(String prefix) {
+  public static File createTempDir() {
+    return createTempDir("tempDir");
+  }
+
+  /**
+   */
+  public static File createTempDir(String prefix) {
     File base = getTempDirBase();
 
     int attempt = 0;
@@ -2264,7 +2271,7 @@ public abstract class LuceneTestCase extends Assert {
   
   /**
    */
-  protected static File createTempFile(String prefix, String suffix) throws IOException {
+  public static File createTempFile(String prefix, String suffix) throws IOException {
     File base = getTempDirBase();
 
     int attempt = 0;
@@ -2284,13 +2291,7 @@ public abstract class LuceneTestCase extends Assert {
 
   /**
    */
-  protected static File createTempDir() {
-    return createTempDir("tempDir");
-  }
-
-  /**
-   */
-  protected static File createTempFile() throws IOException {
+  public static File createTempFile() throws IOException {
     return createTempFile("tempFile", ".tmp");
   }
 

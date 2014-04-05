@@ -291,7 +291,8 @@ public class TestDirectory extends LuceneTestCase {
   }
   
   public void testFsyncDoesntCreateNewFiles() throws Exception {
-    File path = TestUtil.getTempDir("nocreate");
+    File path = createTempDir("nocreate");
+    System.out.println(path.getAbsolutePath());
     Directory fsdir = new SimpleFSDirectory(path);
     
     // write a file
