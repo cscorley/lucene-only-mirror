@@ -405,8 +405,10 @@ public class TestTermVectorsReader extends LuceneTestCase {
 
     ft = new FieldType(StoredField.TYPE);
     ft.setStoreTermVectors(true);
+    doc = new Document();
+    doc.add(new Field("field", "value", ft));
     try {
-      new Field("field", "value", ft);
+      w.addDocument(doc);
       fail("did not hit exception");
     } catch (IllegalArgumentException iae) {
       // Expected
@@ -415,8 +417,10 @@ public class TestTermVectorsReader extends LuceneTestCase {
 
     ft = new FieldType(StoredField.TYPE);
     ft.setStoreTermVectorPositions(true);
+    doc = new Document();
+    doc.add(new Field("field", "value", ft));
     try {
-      new Field("field", "value", ft);
+      w.addDocument(doc);
       fail("did not hit exception");
     } catch (IllegalArgumentException iae) {
       // Expected
@@ -425,8 +429,10 @@ public class TestTermVectorsReader extends LuceneTestCase {
 
     ft = new FieldType(StoredField.TYPE);
     ft.setStoreTermVectorOffsets(true);
+    doc = new Document();
+    doc.add(new Field("field", "value", ft));
     try {
-      new Field("field", "value", ft);
+      w.addDocument(doc);
       fail("did not hit exception");
     } catch (IllegalArgumentException iae) {
       // Expected
@@ -435,8 +441,10 @@ public class TestTermVectorsReader extends LuceneTestCase {
 
     ft = new FieldType(StoredField.TYPE);
     ft.setStoreTermVectorPayloads(true);
+    doc = new Document();
+    doc.add(new Field("field", "value", ft));
     try {
-      new Field("field", "value", ft);
+      w.addDocument(doc);
       fail("did not hit exception");
     } catch (IllegalArgumentException iae) {
       // Expected
